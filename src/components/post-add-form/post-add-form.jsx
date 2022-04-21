@@ -3,7 +3,7 @@ import React from "react";
 const PostAddForm = () => {
     return (
         <div>
-            <form action="">
+            <form action="" className='bottom-panel'>
                 <input
                     type="text"
                     placeholder='О чем думаешь?'

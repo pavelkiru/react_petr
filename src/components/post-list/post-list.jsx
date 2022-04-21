@@ -2,14 +2,24 @@ import React from "react";
 
 import PostListItem from '../post-list-item'
 
-const PostList = () => {
+const PostList = ({data}) => {
+
+    const list = data.map( (item) => {
+
+        const {id, ...restData } = item
+
+        return (
+            <PostListItem
+                 key={item.id}
+                 {...restData}
+            />
+        )
+    })
+
     return (
         <div>
             <ul className='app-list list-group'>
-                <PostListItem />
-                <PostListItem />
-                <PostListItem />
-                <PostListItem />
+                { list }
             </ul>
         </div>
     )
