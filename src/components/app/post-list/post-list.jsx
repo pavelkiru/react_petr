@@ -1,8 +1,8 @@
 import React from "react";
 
-import PostListItem from '../post-list-item'
+import PostListItem from './post-list-item'
 
-const PostList = ({data}) => {
+const PostList = ({data, onDelete}) => {
 
     const list = data.map( (item) => {
 
@@ -10,7 +10,8 @@ const PostList = ({data}) => {
 
         return (
             <PostListItem
-                 key={item.id}
+                 key={id}
+                 onDelete={() => onDelete(id)}
                  {...restData}
             />
         )
