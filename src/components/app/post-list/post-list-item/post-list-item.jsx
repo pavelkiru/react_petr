@@ -2,30 +2,11 @@ import React from "react";
 
 class PostListItem extends React.Component {
 
-    state = {
-       // important: this.props.important
-        important: false,
-        like: false
-    }
-
-    toggleImportant = () => {
-        this.setState( {
-            important: !this.state.important
-        })
-    }
-
-    toggleLike = () => {
-        this.setState( {
-            like: !this.state.like
-        })
-    }
-
     render() {
-        const { label, onDelete } = this.props;
-        const {like, important} =this.state;
+        const { label, onDelete, onToggleImportant, onToggleLike, like, important } = this.props;
 
         let classStar = 'app-list-item d-flex justify-content-between';
-        if(important) {
+        if(!important) {
             classStar += ' important';
         }
 
@@ -41,7 +22,7 @@ class PostListItem extends React.Component {
             </span>
                 <div className='d-flex justify-content-center align-items-center'>
                     <button
-                        onClick={this.toggleImportant}
+                        onClick={onToggleImportant}
                         type='button'
                         className='btn-star btn-sm'>
                         <i className="fa-solid fa-star"></i>
@@ -56,7 +37,7 @@ class PostListItem extends React.Component {
                     </button>
 
                     <button
-                        onClick={this.toggleLike}
+                        onClick={onToggleLike}
                         type='button'
                         className={classHeart}>
                         <i className="fa fa-heart"></i>

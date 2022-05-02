@@ -1,23 +1,26 @@
 import React from "react";
 
-const PostAddForm = ({ onAdd }) => {
+const PostAddForm = ({onAdd, formData, changeInputData}) => {
     return (
-        <div>
-            <div action="" className='bottom-panel'>
-                <input
-                    type="text"
-                    placeholder='О чем думаешь?'
-                    className='form-control new-post-label'
-                />
-                <button
-                    type='submit'
-                    className='btn btn-outline-secondary'
-                    onClick={() => {
-                        onAdd('test')
-                    }}
-                >Добавить</button>
-            </div>
-        </div>
+        <form className='bottom-panel' onSubmit={(e) => {
+                e.preventDefault()
+                onAdd()
+            }
+        }>
+            <input
+                type="text"
+                placeholder='О чем думаешь?'
+                className='form-control new-post-label'
+                value={formData}
+                onChange={(e) => changeInputData(e.target.value)}
+            />
+            <button
+                type='submit'
+                className='btn btn-outline-secondary'
+            >Добавить
+            </button>
+        </form>
+
     )
 }
 
