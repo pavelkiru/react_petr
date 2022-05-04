@@ -20,8 +20,8 @@ class App extends React.Component {
             {id: 5, label: 'te3xt 5', important: false, like: true},
             {id: 6, label: 'te3xt 6', important: true, like: true},
         ],
-
-        formData: ''
+        inputPostAddForm: '',
+        inputSearchPanel: '',
 
     }
 
@@ -63,7 +63,7 @@ class App extends React.Component {
     addItem = () => {
         const newItem = {
             id: this.state.items.length + 1,
-            label: this.state.formData,
+            label: this.state.inputPostAddForm,
             important: false
         }
         this.setState(({items}) => {
@@ -72,7 +72,7 @@ class App extends React.Component {
                     ...items,
                     newItem
                 ],
-                formData: ''
+                inputPostAddForm: ''
             }
         })
     }
@@ -86,20 +86,43 @@ class App extends React.Component {
     }
 
     changeInputData = (data) => {
-        console.log(data)
-
-        this.setState(({formData}) => {
+        this.setState(({inputPostAddForm}) => {
             return {
-                formData: data
+                inputPostAddForm: data
             }
         })
+    }
+
+    addSearchData = (data) => {
+        this.setState( ({inputSearchPanel}) => {
+            return {
+                inputSearchPanel: data
+            }
+        })
+    }
+
+    searchPosts = (items, searchData ) => {
+        if(searchData == '' ) {
+            return items
+        }
+
+        if(items) {
+
+            let data2 = items.filter( (item) => {
+                return item.label.indexOf(searchData) > -1
+            } )
+            return data2;
+        }
     }
 
     render() {
         let totalImportant = 0;
         let totalLike = 0;
         let totalItems = this.state.items.length
-        //  console.log(this.state.items)
+        const {items, inputSearchPanel} = this.state;
+
+        const searchResults = this.searchPosts(items, inputSearchPanel)
+
         this.state.items.map((item) => {
             if (item.important) {
                 totalImportant++
@@ -108,6 +131,7 @@ class App extends React.Component {
                 totalLike++
             }
         })
+
 
         return (
             <div className='p-2 container'>
@@ -119,18 +143,23 @@ class App extends React.Component {
                     totalImportant={totalImportant}
                 />
                 <div className='search-panel d-flex'>
-                    <SearchPanel/>
+                    <SearchPanel
+                        searchPosts={this.searchPosts}
+                        inputSearchPanel={this.inputSearchPanel}
+                        addSearchData={this.addSearchData}
+                    />
                     <PostStatusFilter/>
                 </div>
                 <PostList
-                    data={this.state.items}
+                 //   data={this.searchResult}
+                    data={searchResults}
                     onDelete={this.deleteItem}
                     onToggleImportant={this.onToggleImportant}
                     onToggleLike={this.onToggleLike}
                 />
                 <PostAddForm
                     onAdd={this.addItem}
-                    formData={this.state.formData}
+                    inputPostAddForm={this.state.inputPostAddForm}
                     changeInputData={this.changeInputData}
                 />
             </div>
