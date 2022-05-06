@@ -22,7 +22,7 @@ class App extends React.Component {
         ],
         inputPostAddForm: '',
         inputSearchPanel: '',
-
+        filterItems: 'all'
     }
 
     indexChangingItem = (array, id) => {
@@ -102,12 +102,12 @@ class App extends React.Component {
     }
 
     searchPosts = (items, searchData ) => {
+        items = this.onFilterItems(items, this.state.filterItems)
         if(searchData == '' ) {
             return items
         }
 
         if(items) {
-
             let data2 = items.filter( (item) => {
                 return item.label.indexOf(searchData) > -1
             } )
@@ -115,11 +115,32 @@ class App extends React.Component {
         }
     }
 
+    getFilterValue = (value) => {
+        this.setState(({filterItems}) => {
+                return {
+                    filterItems: value
+                }
+            }
+        )
+    }
+
+    onFilterItems = (items, value) => {
+        if(value === 'important') {
+            return items.filter( item => item.important )
+        }
+        else if(value === 'like') {
+            return items.filter( item => item.like )
+        }
+        else {
+            return items
+        }
+    }
+
     render() {
         let totalImportant = 0;
         let totalLike = 0;
         let totalItems = this.state.items.length
-        const {items, inputSearchPanel} = this.state;
+        const {items, inputSearchPanel, filterItems} = this.state;
 
         const searchResults = this.searchPosts(items, inputSearchPanel)
 
@@ -132,6 +153,7 @@ class App extends React.Component {
             }
         })
 
+        console.log(filterItems)
 
         return (
             <div className='p-2 container'>
@@ -148,7 +170,10 @@ class App extends React.Component {
                         inputSearchPanel={this.inputSearchPanel}
                         addSearchData={this.addSearchData}
                     />
-                    <PostStatusFilter/>
+                    <PostStatusFilter
+                        getFilterValue={this.getFilterValue}
+                        filterItems={filterItems}
+                    />
                 </div>
                 <PostList
                  //   data={this.searchResult}
